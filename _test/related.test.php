@@ -34,7 +34,7 @@ class dokuwiki_plugin_related_test extends DokuWikiTest
 
     // Create the pages
     // and configure
-    public static function setUpBeforeClass()
+    public  static function setUpBeforeClass():void
     {
         parent::setUpBeforeClass();
         // Config changes in function setUpBeforeClass() have no effect set setup
