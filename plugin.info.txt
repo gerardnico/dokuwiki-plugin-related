@@ -1,0 +1,7 @@
+base    related
+author  Nicolas GERARD
+email   gerardnico@gmail.com
+date    2019-02-12
+name    Related Plugin
+desc    Show pages related based on backlinks and reputation
+url     https://gerardnico.com/dokuwiki/related
