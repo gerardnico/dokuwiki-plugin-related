@@ -58,8 +58,8 @@ class dokuwiki_plugin_related_test extends DokuWikiTest
 
         // Create a referrer page that links to the first referrers
         // It should then be the first one in the related list
-        if (self::REFERRERS_ID_TOP > self::REFERRERS_COUNT){
-            throw new Exception("The value of the REFERRERS_ID_TOP (".self::REFERRERS_ID_TOP.") should be less than the value of REFERRERS_COUNT (".self::REFERRERS_COUNT.")");
+        if (self::REFERRERS_ID_TOP > self::REFERRERS_COUNT) {
+            throw new Exception("The value of the REFERRERS_ID_TOP (" . self::REFERRERS_ID_TOP . ") should be less than the value of REFERRERS_COUNT (" . self::REFERRERS_COUNT . ")");
         }
         self::createReferrerPage(self::$referrers[self::REFERRERS_ID_TOP]);
 
@@ -67,9 +67,9 @@ class dokuwiki_plugin_related_test extends DokuWikiTest
         $PageId = 'extraPatternTest';
         self::$extraPatternPage = self::TEST_PAGE_NAMESPACE . $PageId;
         saveWikiText(self::$extraPatternPage,
-            '======  '. $PageId .' ======' . DW_LF . DW_LF .
-            self::EXTRA_PATTERN_VALUE. DW_LF . DW_LF .
-            '<'.syntax_plugin_related::PLUGIN_NAME.'>', $changeSummary);
+            '======  ' . $PageId . ' ======' . DW_LF . DW_LF .
+            self::EXTRA_PATTERN_VALUE . DW_LF . DW_LF .
+            '<' . syntax_plugin_related::PLUGIN_NAME . '>', $changeSummary);
         idx_addPage(self::$extraPatternPage);
         self::createReferrerPage(self::$extraPatternPage);
 
@@ -86,7 +86,7 @@ class dokuwiki_plugin_related_test extends DokuWikiTest
             , $changeSummary);
 
 
-        dbglog("\nTest Plugin" . syntax_plugin_related::PLUGIN_NAME.': Start Page was created at ' . wikiFN($startId));
+        dbglog("\nTest Plugin" . syntax_plugin_related::PLUGIN_NAME . ': Start Page was created at ' . wikiFN($startId));
 
 
     }
@@ -97,13 +97,13 @@ class dokuwiki_plugin_related_test extends DokuWikiTest
      */
     public static function createReferrerPage($referentPageId): string
     {
-        $referrerId = sizeof(self::$referrers)+1;
+        $referrerId = sizeof(self::$referrers) + 1;
         $referrerPageId = self::TEST_PAGE_NAMESPACE . 'referrer' . $referrerId;
         saveWikiText($referrerPageId,
-            '======   Referrer ' . $referrerId . ' to '.$referentPageId.' ======' . DW_LF . DW_LF .
+            '======   Referrer ' . $referrerId . ' to ' . $referentPageId . ' ======' . DW_LF . DW_LF .
             '  * [[' . $referentPageId . ']]', "Test");
         idx_addPage($referrerPageId);
-        self::$referrers[]=$referrerPageId;
+        self::$referrers[] = $referrerPageId;
         return $referrerPageId;
     }
 
@@ -122,9 +122,16 @@ class dokuwiki_plugin_related_test extends DokuWikiTest
         // and we cannot visualize them
         // This is not on the savedir conf value level because it has no effect on the datadir value
         $conf['datadir'] = getcwd() . self::DOKU_DATA_DIR;
+        // Create the dir
+        if (!file_exists($conf['datadir'])) {
+            mkdir($conf['datadir'], $mode = 0777, $recursive = true);
+        }
         $conf['cachetime'] = -1;
         $conf['allowdebug'] = 1; // log in cachedir+debug.log
-        $conf['cachedir'] = getcwd(). self::DOKU_CACHE_DIR;
+        $conf['cachedir'] = getcwd() . self::DOKU_CACHE_DIR;
+        if (!file_exists($conf['cachedir'])) {
+            mkdir($conf['cachedir'], $mode = 0777, $recursive = true);
+        }
         dbglog("\nSetup was called- Test Plugin" . syntax_plugin_related::PLUGIN_NAME);
     }
 
@@ -139,7 +146,7 @@ class dokuwiki_plugin_related_test extends DokuWikiTest
         $info = confToHash($file);
 
         $this->assertArrayHasKey('base', $info);
-        $this->assertEquals(syntax_plugin_related::PLUGIN_NAME,$info['base']);
+        $this->assertEquals(syntax_plugin_related::PLUGIN_NAME, $info['base']);
 
         $this->assertArrayHasKey('author', $info);
         $this->assertArrayHasKey('name', $info);
@@ -193,7 +200,7 @@ class dokuwiki_plugin_related_test extends DokuWikiTest
         $referrers = $relatedPlugin->related($referentPageId);
         $this->assertEquals(self::REFERRERS_COUNT, sizeof($referrers));
         // The first one must be the one that had two backlinks
-        $this->assertEquals(self::$referrers[self::REFERRERS_ID_TOP],$referrers[0][syntax_plugin_related::RELATED_PAGE_ID_PROP]);
+        $this->assertEquals(self::$referrers[self::REFERRERS_ID_TOP], $referrers[0][syntax_plugin_related::RELATED_PAGE_ID_PROP]);
 
         // With a max via argument
         $max = 1;
@@ -220,8 +227,8 @@ class dokuwiki_plugin_related_test extends DokuWikiTest
         $response = $request->execute();
 
         //$response->queryHTML('#'.syntax_plugin_related::ELEMENT_ID)->attr('content');
-        $idElements = $response->queryHTML('#'.syntax_plugin_related::ELEMENT_ID)->length;
-        $this->assertEquals(2,$idElements);
+        $idElements = $response->queryHTML('#' . syntax_plugin_related::ELEMENT_ID)->length;
+        $this->assertEquals(2, $idElements);
 
     }
 

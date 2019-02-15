@@ -223,7 +223,7 @@ class syntax_plugin_related extends DokuWiki_Syntax_Plugin
         if (sizeof($backlinks) > 50){
             $backlinks = array_slice($backlinks, 0, 50);
         }
-        
+
         $related = array();
         foreach ($backlinks as $backlink){
             $page = array();
